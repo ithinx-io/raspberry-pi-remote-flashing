@@ -23,7 +23,7 @@ SDIMG="recovery.img"
 SDIMG_ROOTFS_TYPE="ext3"
 ROOTFS_PT_SIZE="10485760" #10GB
 # Boot partition size [in KiB] (will be rounded up to IMAGE_ROOTFS_ALIGNMENT)
-BOOT_PART_SIZE="40960"
+BOOT_PART_SIZE="53223"
 # Set alignment to 4MB [in KiB]
 IMAGE_ROOTFS_ALIGNMENT="4096"
 

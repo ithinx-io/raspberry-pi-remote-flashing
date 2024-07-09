@@ -122,10 +122,10 @@ function create_image() {
     # Create empty image with three partitions
     sudo dd if=/dev/zero of="${IMAGE_PATH}" bs=1024 count=0 seek=${IMAGE_SIZE}
     sudo parted -s "${IMAGE_PATH}" mklabel msdos
-    sudo parted -s "${IMAGE_PATH}" unit KiB mkpart primary fat32 4096 45056
+    sudo parted -s "${IMAGE_PATH}" unit KiB mkpart primary fat32 4096 57344
     sudo parted -s "${IMAGE_PATH}" set 1 boot on
-    sudo parted -s "${IMAGE_PATH}" unit KiB mkpart primary fat32 45056 86016
-    sudo parted -s "${IMAGE_PATH}" -- unit KiB mkpart primary ext2 86016 -1s
+    sudo parted -s "${IMAGE_PATH}" unit KiB mkpart primary fat32 57344 110592
+    sudo parted -s "${IMAGE_PATH}" -- unit KiB mkpart primary ext2 110592 -1s
     sudo parted "${IMAGE_PATH}" print
 
     # Format partitions

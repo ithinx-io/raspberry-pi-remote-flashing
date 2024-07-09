@@ -55,7 +55,7 @@ setenv filesize 0
 # Assuming RAM address is: 0x00080000
 # We have partition table and other data from address 0 to 4194304 (dec, not hex)
 # 0x00080000 + 4194304 = 0x480000
-# The address of the second partition is: 0x16000
+# The address of the second partition is: 0x1C000
 
 # Init values for reading the first file to RAM
 setenv pt_size_bytes 400000
@@ -72,7 +72,7 @@ if test ${filesize} > 0; then
     fatrm mmc 0:2 image-version-info
 
     # Calculate addresses and write first file (skipping the partition table) to MMC (SD Card)
-    setenv mmc_offset 16000
+    setenv mmc_offset 1C000
     setexpr blocks_to_skip $pt_size_bytes / 200 ;
     setexpr img_size_blk $filesize / 200 ;
     setexpr blocks_to_write $img_size_blk - $blocks_to_skip ;
