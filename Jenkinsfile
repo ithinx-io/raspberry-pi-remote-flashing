@@ -21,16 +21,39 @@ pipeline {
             }
         }
         stage('Build') {
+            agent {
+                dockerfile {
+                    filename 'Dockerfile'
+                    dir '.'
+                    reuseNode true
+                    label 'linux'
+                    additionalBuildArgs '--network=host \
+                                         --build-arg UID=$(id -u) \
+                                         --build-arg GID=$(id -g)'
+                    // mounting the ssh folder is a workaround for recursive git checkouts using the west tool
+                    args '''
+                           --network host \
+                           --privileged \
+                           -v /dev/mapper:/dev/mapper \
+                           -v /dev/loop0:/dev/loop0 \
+                           -v $WORKSPACE:/workdir \
+                           -v $HOME/.ssh:/home/user/.ssh \
+                           -w /workdir
+                         '''
+                }
+            }
             steps {
                 sh '''
-                     cd recovery_image && ./build.sh
+                     cd recovery_image
+                     ./build.sh
                    '''
             }
         }
         stage('Archive') {
             steps {
-                // recovery.img
-                archiveArtifacts artifacts: 'recovery.img', onlyIfSuccessful: true
+                dir('recovery_image/artifacts') {
+                    archiveArtifacts artifacts: 'recovery.tar.bz2', onlyIfSuccessful: true
+                }
             }
         }
     }
@@ -43,10 +66,8 @@ pipeline {
                                      state: 'SUCCESS' == currentBuild.result ? 'success' : 'failed'
         }
         success {
-            steps {
-                // cleanup workspace to reduce Jenkins footprint (keep sources for browsing)
-                cleanWs()
-            }
+            // cleanup workspace to reduce Jenkins footprint (keep sources for browsing)
+            cleanWs()
         }
     }
 }
