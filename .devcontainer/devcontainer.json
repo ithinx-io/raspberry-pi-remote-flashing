@@ -1,0 +1,27 @@
+{
+    "name": "RaspberryPi Boot",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "buildArgs": "--network=host --build-arg UID=$(id -u) --build-arg GID=$(id -g)",
+    },
+    "remoteUser": "${env:USERNAME}",
+    "updateRemoteUserUID": true,
+    "runArgs": [
+        "--network", "host",
+        "--privileged",
+        "-v", "/dev/mapper:/dev/mapper",
+        "-v", "/dev/loop0:/dev/loop0",
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-azuretools.vscode-docker",
+            ],
+        }
+    },
+
+    //"forwardPorts": [3000],
+
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workdir,type=bind",
+    "workspaceFolder": "/workdir",
+}

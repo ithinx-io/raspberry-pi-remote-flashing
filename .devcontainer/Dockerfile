@@ -9,6 +9,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update \
  && apt install -y sudo wget patch parted dosfstools bzip2
 
+# add required develop tools
+RUN apt update \
+&& apt install -y git
+
 # Create 'user' account
 RUN groupadd -g $GID -o user
 

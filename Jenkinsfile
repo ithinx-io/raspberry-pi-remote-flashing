@@ -23,7 +23,7 @@ pipeline {
         stage('Build') {
             agent {
                 dockerfile {
-                    filename 'Dockerfile'
+                    filename '.devcontainer/Dockerfile'
                     dir '.'
                     reuseNode true
                     label 'linux'
@@ -71,4 +71,3 @@ pipeline {
         }
     }
 }
-
