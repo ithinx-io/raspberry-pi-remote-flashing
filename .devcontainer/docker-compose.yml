@@ -6,5 +6,6 @@ services:
     privileged: true
     volumes:
       - ..:/workdir:cached
+      - ../recovery_image:/srv/tftpd
     network_mode: "host"
     command: sleep infinity
