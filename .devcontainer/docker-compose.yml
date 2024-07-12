@@ -1,0 +1,10 @@
+services:
+  devcontainer:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    privileged: true
+    volumes:
+      - ..:/workdir:cached
+    network_mode: "host"
+    command: sleep infinity

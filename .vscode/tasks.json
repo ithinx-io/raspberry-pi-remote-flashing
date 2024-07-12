@@ -5,12 +5,15 @@
     "tasks": [
         {
             "label": "(re)build raspberry recovery image",
-            "group": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "type": "shell",
             "command": "./build.sh",
             "options": {
                 "cwd": "${workspaceFolder}/recovery_image"
-            }
+            },
         },
     ]
 }

@@ -57,11 +57,6 @@ function parse_script_args() {
     fi
 }
 
-function handle_dependencies() {
-    print_title "Installing dependencies.."
-    sudo apt-get install make bison flex kpartx u-boot-tools gcc-arm-linux-gnueabi coreutils -y
-}
-
 function get_sources() {
     mkdir -p "${SOURCES_PATH}"
 
@@ -199,7 +194,6 @@ function print_footer() {
 print_header
 clean
 parse_script_args "${@}"
-handle_dependencies
 get_sources
 patch_sources
 build_sources

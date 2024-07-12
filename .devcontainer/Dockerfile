@@ -7,11 +7,25 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # add required tools
 RUN apt update \
- && apt install -y sudo wget patch parted dosfstools bzip2
+ && apt install -y \
+	    sudo \
+		wget \
+		patch \
+		parted \
+		dosfstools \
+		bzip2 \
+		make \
+		bison\
+		flex \
+		kpartx \
+		u-boot-tools \
+		gcc-arm-linux-gnueabi \
+		coreutils
 
 # add required develop tools
 RUN apt update \
-&& apt install -y git
+&& apt install -y \
+		git
 
 # Create 'user' account
 RUN groupadd -g $GID -o user
