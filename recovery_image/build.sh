@@ -29,7 +29,7 @@ SCRIPTS_PATH="${SCRIPT_PATH}/scripts"
 ## Settings
 IMAGE_NANE="recovery.img"
 IMAGE_PATH="${SCRIPT_PATH}/${IMAGE_NANE}"
-IMAGE_SIZE="10530816"       # kB (~10GB)
+IMAGE_SIZE="10637311"       # kB (~10GB)
 TRUNCATE_IMAGE_AFTER="200M" #MB
 RPI_FIRMWARE_VER="1.20190925"
 U_BOOT_VER="2019.10"
@@ -59,7 +59,7 @@ function parse_script_args() {
 
 function handle_dependencies() {
     print_title "Installing dependencies.."
-    sudo apt-get install make bison flex kpartx u-boot-tools gcc-arm-linux-gnueabi coreutils -y
+    sudo apt-get install make bison flex kpartx u-boot-tools gcc-aarch64-linux-gnu coreutils -y
 }
 
 function get_sources() {
@@ -103,12 +103,12 @@ function build_sources() {
     # Build U-BOOT
     print_title "Building U-BOOT.."
     cd "${SOURCES_PATH}/u-boot-${U_BOOT_VER}"
-    make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- rpi_3_32b_defconfig
-    make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- -j"$(nproc)"
+    make ARCH=arm CROSS_COMPILE=aarch64-linux-gnu- rpi_3_defconfig
+    make ARCH=arm CROSS_COMPILE=aarch64-linux-gnu- -j"$(nproc)"
 
     # Build Boot Script
     print_title "Building U-BOOT boot script.."
-    mkimage -A arm -O linux -T script -C none -n boot_script -d "${SCRIPTS_PATH}/boot_script.txt" "${BUILD_PATH}/boot.scr.uimg"
+    mkimage -A arm64 -O linux -T script -C none -n boot_script -d "${SCRIPTS_PATH}/boot_script.txt" "${BUILD_PATH}/boot.scr.uimg"
 }
 
 function create_image() {
@@ -124,8 +124,8 @@ function create_image() {
     sudo parted -s "${IMAGE_PATH}" mklabel msdos
     sudo parted -s "${IMAGE_PATH}" unit KiB mkpart primary fat32 4096 45056
     sudo parted -s "${IMAGE_PATH}" set 1 boot on
-    sudo parted -s "${IMAGE_PATH}" unit KiB mkpart primary fat32 45056 86016
-    sudo parted -s "${IMAGE_PATH}" -- unit KiB mkpart primary ext2 86016 -1s
+    sudo parted -s "${IMAGE_PATH}" unit KiB mkpart primary fat32 45056 116090
+    sudo parted -s "${IMAGE_PATH}" -- unit KiB mkpart primary ext2 118784 -1s
     sudo parted "${IMAGE_PATH}" print
 
     # Format partitions
